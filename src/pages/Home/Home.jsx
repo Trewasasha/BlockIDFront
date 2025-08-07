@@ -3,50 +3,53 @@ import styles from './Home.module.css';
 
 export const Home = () => (
   <main className={styles.home}>
-    {/* Видео-секция */}
+    {/* Герой-секция с видео */}
     <section className={styles.hero}>
       <div className={styles.videoContainer}>
         <video autoPlay loop muted playsInline className={styles.heroVideo}>
-          <source src="/kitchen-video.mp4" type="video/mp4" />
+          <source src="../../../public/video/1224.mp4" type="video/mp4" />
           Ваш браузер не поддерживает видео.
         </video>
       </div>
     </section>
 
-    {/* Секция с параллакс-эффектом и характеристиками */}
+    {/* Секция с характеристиками */}
     <section className={styles.parallaxSection}>
       <div className={styles.parallaxRow}>
-        <div className={styles.parallaxImage}></div>
+        <div 
+          className={styles.parallaxImage}
+          style={{ backgroundImage: "url('../../../public/2.jpg')" }}
+        />
         <div className={styles.featureCard}>
           <h3>Дизайн</h3>
-          <div className={styles.featureBar}></div>
-          <div className={styles.featureBar}></div>
-          <div className={styles.featureBar}></div>
+          <p>Современные дизайнерские решения, которые подчеркнут стиль вашего интерьера</p>
         </div>
       </div>
 
       <div className={styles.parallaxRow}>
-        <div className={styles.parallaxImage}></div>
+        <div 
+          className={styles.parallaxImage}
+          style={{ backgroundImage: "url('../../../public/2.jpg')" }}
+        />
         <div className={styles.featureCard}>
           <h3>Скорость</h3>
-          <div className={styles.featureBar}></div>
-          <div className={styles.featureBar}></div>
-          <div className={styles.featureBar}></div>
+          <p>Быстрая доставка и монтаж в кратчайшие сроки без потери качества</p>
         </div>
       </div>
 
       <div className={styles.parallaxRow}>
-        <div className={styles.parallaxImage}></div>
+        <div 
+          className={styles.parallaxImage}
+          style={{ backgroundImage: "url('../../../public/2.jpg')" }}
+        />
         <div className={styles.featureCard}>
           <h3>Качество</h3>
-          <div className={styles.featureBar}></div>
-          <div className={styles.featureBar}></div>
-          <div className={styles.featureBar}></div>
+          <p>Используем только проверенные материалы от ведущих производителей</p>
         </div>
       </div>
     </section>
 
-    {/* Сетка товаров */}
+    {/* Секция с товарами */}
     <section className={styles.productsSection}>
       <h2 className={styles.sectionTitle}>Наши товары</h2>
       <div className={styles.productsGrid}>
@@ -59,6 +62,5 @@ export const Home = () => (
         ))}
       </div>
     </section>
-
   </main>
 );

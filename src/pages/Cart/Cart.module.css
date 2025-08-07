@@ -1,28 +1,33 @@
 .cart {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem;
 }
 
 .summary {
-  background: #2a2a2a;
-  padding: 1.5rem;
+  background: white;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
-  margin-bottom: 2rem;
+  padding: 1.5rem;
+  margin-bottom: 4rem;
 }
 
 .payment {
-  background: #2a2a2a;
-  padding: 1.5rem;
+  background: white;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
+  padding: 1.5rem;
 }
 
 .payment select {
   padding: 0.5rem;
-  margin-right: 1rem;
-  background: #1a1a1a;
-  color: white;
-  border: none;
+  border: 1px solid #e0e0e0;
   border-radius: 4px;
+  background: white;
+}
+
+@media (max-width: 768px) {
+  .cart {
+    padding: 1rem;
+  }
 }
