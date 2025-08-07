@@ -1,0 +1,89 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: none; 
+  padding: 0; 
+}
+
+/* Стили для логотипа (адаптированные) */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  padding: 1.5em;
+  background: #ffffff;
+}
+
+.logo {
+  height: 6em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .logo.spin {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+/* Основное содержимое */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  text-align: center;
+}
+
+/* Карточки товаров (адаптированные) */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 2em;
+  transition: transform 0.25s;
+}
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.read-the-docs {
+  color: #888;
+  margin-top: 2rem;
+}
+
+/* Медиа-запросы для светлой темы */
+@media (prefers-color-scheme: light) {
+  .logo-container {
+    background: #f9f9f9;
+  }
+  .card {
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+}

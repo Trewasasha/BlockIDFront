@@ -1,0 +1,184 @@
+import { ShoppingCart, User } from 'react-feather';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../UseAuth/useAuth';
+import styles from './Header.module.css';
+
+export const Header = () => {
+  const {
+    isLoggedIn,
+    isAuthModalOpen,
+    authMode,
+    email,
+    password,
+    confirmPassword,
+    isLoading,
+    error,
+    passwordError,
+    setEmail,
+    setPassword,
+    setConfirmPassword,
+    handleAuth,
+    login,
+    openAuthModal,
+    closeAuthModal,
+    setAuthMode,
+  } = useAuth();
+
+  const handleProfileClick = (e) => {
+    if (!isLoggedIn) {
+      e.preventDefault();
+      openAuthModal('login');
+    }
+  };
+
+  return (
+    <>
+      <header className={styles.header}>
+        <nav className={styles.nav}>
+          <Link to="/">Главная</Link>
+        </nav>
+        <div className={styles.actions}>
+          <Link to="/cart" className={styles.iconLink} aria-label="Корзина">
+            <ShoppingCart size={20} />
+            <span className={styles.badge}>0</span>
+          </Link>
+          <Link 
+            to="/profile" 
+            className={styles.iconLink} 
+            aria-label="Профиль"
+            onClick={handleProfileClick}
+          >
+            <User size={20} />
+          </Link>
+        </div>
+      </header>
+
+      {isAuthModalOpen && (
+        <div className={styles.authModal}>
+          <div className={styles.modalContent}>
+            <button 
+              className={styles.closeButton}
+              onClick={closeAuthModal}
+              disabled={isLoading}
+            >
+              &times;
+            </button>
+            
+            <h3>{authMode === 'login' ? 'Вход' : 'Регистрация'}</h3>
+            
+            {error && <p className={styles.error}>{error}</p>}
+            
+            <form onSubmit={handleAuth}>
+              <div className={styles.formGroup}>
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  disabled={isLoading}
+                />
+              </div>
+              
+              <div className={styles.formGroup}>
+                <label htmlFor="password">Пароль</label>
+                <input
+                  type="password"
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  disabled={isLoading}
+                  minLength={6}
+                />
+              </div>
+              
+              {authMode === 'register' && (
+                <div className={styles.formGroup}>
+                  <label htmlFor="confirmPassword">Подтвердите пароль</label>
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    disabled={isLoading}
+                    minLength={6}
+                  />
+                  {passwordError && (
+                    <p className={styles.passwordError}>{passwordError}</p>
+                  )}
+                </div>
+              )}
+              
+              <button 
+                type="submit" 
+                className={styles.authButton}
+                disabled={isLoading}
+              >
+                {isLoading ? 'Загрузка...' : authMode === 'login' ? 'Войти' : 'Зарегистрироваться'}
+              </button>
+            </form>
+            
+            <div className={styles.authSwitch}>
+              {authMode === 'login' ? (
+                <p>
+                  Нет аккаунта?{' '}
+                  <button 
+                    type="button" 
+                    onClick={() => setAuthMode('register')}
+                    className={styles.switchButton}
+                  >
+                    Зарегистрироваться
+                  </button>
+                </p>
+              ) : (
+                <p>
+                  Уже есть аккаунт?{' '}
+                  <button 
+                    type="button" 
+                    onClick={() => setAuthMode('login')}
+                    className={styles.switchButton}
+                  >
+                    Войти
+                  </button>
+                </p>
+              )}
+            </div>
+            
+            <div className={styles.socialAuth}>
+              <p>Или войти через:</p>
+              <div className={styles.socialButtons}>
+                <button 
+                  type="button"
+                  className={styles.socialButton}
+                  onClick={() => login('VK')}
+                  disabled={isLoading}
+                >
+                  <img src="/vk-icon.png" alt="Вконтакте" width={20} height={20} />
+                </button>
+                <button 
+                  type="button"
+                  className={styles.socialButton}
+                  onClick={() => login('Yandex')}
+                  disabled={isLoading}
+                >
+                  <img src="/yandex-icon.png" alt="Яндекс" width={20} height={20} />
+                </button>
+                <button 
+                  type="button"
+                  className={styles.socialButton}
+                  onClick={() => login('Google')}
+                  disabled={isLoading}
+                >
+                  <img src="/google-icon.png" alt="Google" width={20} height={20} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
