@@ -8,7 +8,21 @@ import { useAuth } from './components/UseAuth/useAuth';
 import './App.css';
 
 const ProtectedRoute = ({ children }) => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, isAuthChecking } = useAuth();
+  
+  if (isAuthChecking) {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh'
+      }}>
+        <div>Проверка авторизации...</div>
+      </div>
+    );
+  }
+  
   return isLoggedIn ? children : <Navigate to="/" replace />;
 };
 

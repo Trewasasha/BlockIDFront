@@ -1,140 +1,202 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export const api = axios.create({
-  baseURL: 'http://localhost:8000',
+  baseURL: 'http://localhost:8000/api/v1',
   headers: {
     'Content-Type': 'application/json'
   }
 });
 
+// Интерцептор для автоматического добавления токена
 api.interceptors.request.use(config => {
   const token = localStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
+}, error => {
+  return Promise.reject(error);
 });
 
+// Интерцептор для обработки 401 ошибки
+api.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('token');
+      window.dispatchEvent(new Event('unauthorized'));
+    }
+    return Promise.reject(error);
+  }
+);
+
+const PASSWORD_ERRORS = {
+  MISMATCH: 'Пароли не совпадают',
+  TOO_SHORT: 'Пароль должен содержать минимум 6 символов',
+};
+
 export const useAuth = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    return !!localStorage.getItem('token');
+  const [state, setState] = useState({
+    isLoggedIn: false,
+    isAuthChecking: true,
+    isAuthModalOpen: false,
+    authMode: 'login',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    isLoading: false,
+    error: null,
+    passwordError: ''
   });
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [authMode, setAuthMode] = useState('login');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [passwordError, setPasswordError] = useState('');
+
   const navigate = useNavigate();
 
+  const checkAuth = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) throw new Error('No token found');
+      
+      await api.get('/auth/check');
+      setState(prev => ({ ...prev, isLoggedIn: true, isAuthChecking: false }));
+    } catch (err) {
+      console.error('Auth check error:', err);
+      localStorage.removeItem('token');
+      setState(prev => ({ ...prev, isLoggedIn: false, isAuthChecking: false }));
+    }
+  };
+
+  useEffect(() => {
+    checkAuth();
+
+    const handleUnauthorized = () => {
+      setState(prev => ({ ...prev, isLoggedIn: false }));
+      navigate('/');
+    };
+
+    window.addEventListener('unauthorized', handleUnauthorized);
+    return () => window.removeEventListener('unauthorized', handleUnauthorized);
+  }, [navigate]);
+
   const validatePassword = () => {
-    if (authMode === 'register') {
-      if (password !== confirmPassword) {
-        setPasswordError('Пароли не совпадают');
+    if (state.authMode === 'register') {
+      if (state.password !== state.confirmPassword) {
+        setState(prev => ({ ...prev, passwordError: PASSWORD_ERRORS.MISMATCH }));
         return false;
       }
-      if (password.length < 6) {
-        setPasswordError('Пароль должен содержать минимум 6 символов');
+      if (state.password.length < 6) {
+        setState(prev => ({ ...prev, passwordError: PASSWORD_ERRORS.TOO_SHORT }));
         return false;
       }
     }
-    setPasswordError('');
+    setState(prev => ({ ...prev, passwordError: '' }));
     return true;
   };
 
   const handleAuth = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError(null);
+    setState(prev => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      if (authMode === 'register' && !validatePassword()) {
+      if (state.authMode === 'register' && !validatePassword()) {
+        setState(prev => ({ ...prev, isLoading: false }));
         return;
       }
 
-      const endpoint = authMode === 'login' ? '/login' : '/register';
-      const payload = authMode === 'login' 
-        ? { email, password }
-        : { 
-            email, 
-            password, 
-            confirm_password: confirmPassword 
-          };
+      const endpoint = state.authMode === 'login' ? '/auth/login' : '/register';
+      const payload = state.authMode === 'login'
+        ? new URLSearchParams({ username: state.email, password: state.password })
+        : { email: state.email, password: state.password, confirm_password: state.confirmPassword };
 
-      const response = await api.post(endpoint, payload);
+      const config = {
+        headers: {
+          'Content-Type': state.authMode === 'login' 
+            ? 'application/x-www-form-urlencoded' 
+            : 'application/json'
+        }
+      };
+
+      const response = await api.post(endpoint, payload, config);
 
       if (response.data.access_token) {
-        setIsLoggedIn(true);
         localStorage.setItem('token', response.data.access_token);
-        setIsAuthModalOpen(false);
+        setState(prev => ({ 
+          ...prev, 
+          isLoggedIn: true,
+          isAuthModalOpen: false,
+          isLoading: false,
+          email: '',
+          password: '',
+          confirmPassword: ''
+        }));
         navigate('/profile');
+      } else {
+        throw new Error('Не удалось получить токен авторизации');
       }
     } catch (err) {
-      setError(
-        err.response?.data?.detail ||
-        err.message ||
-        'Произошла ошибка при аутентификации'
-      );
-      if (err.response?.status === 401) {
-        logout();
-      }
-    } finally {
-      setIsLoading(false);
+      setState(prev => ({
+        ...prev,
+        error: err.response?.data?.detail || err.message || 'Произошла ошибка при аутентификации',
+        isLoading: false
+      }));
     }
   };
 
   const logout = async () => {
     try {
       await api.post('/logout');
+    } catch (err) {
+      console.error('Ошибка при выходе:', err);
     } finally {
       localStorage.removeItem('token');
-      setIsLoggedIn(false);
+      setState(prev => ({
+        ...prev,
+        isLoggedIn: false,
+        email: '',
+        password: '',
+        confirmPassword: ''
+      }));
       navigate('/');
     }
   };
 
   const openAuthModal = (mode = 'login') => {
-    setAuthMode(mode);
-    setIsAuthModalOpen(true);
-    setError(null);
-    setPasswordError('');
-    setEmail('');
-    setPassword('');
-    setConfirmPassword('');
+    setState(prev => ({
+      ...prev,
+      authMode: mode,
+      isAuthModalOpen: true,
+      error: null,
+      passwordError: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
+    }));
   };
 
   const closeAuthModal = () => {
-    setIsAuthModalOpen(false);
-    setError(null);
-    setPasswordError('');
+    setState(prev => ({
+      ...prev,
+      isAuthModalOpen: false,
+      error: null,
+      passwordError: ''
+    }));
   };
 
-  const login = (provider) => {
+  const loginWithProvider = (provider) => {
     window.location.href = `${api.defaults.baseURL}/auth/${provider.toLowerCase()}`;
   };
 
   return {
-    isLoggedIn,
-    isAuthModalOpen,
-    authMode,
-    email,
-    password,
-    confirmPassword,
-    isLoading,
-    error,
-    passwordError,
-    setEmail,
-    setPassword,
-    setConfirmPassword,
+    ...state,
+    setEmail: (email) => setState(prev => ({ ...prev, email })),
+    setPassword: (password) => setState(prev => ({ ...prev, password })),
+    setConfirmPassword: (confirmPassword) => setState(prev => ({ ...prev, confirmPassword })),
     handleAuth,
     logout,
-    login,
+    loginWithProvider,
     openAuthModal,
     closeAuthModal,
-    setAuthMode,
+    setAuthMode: (mode) => setState(prev => ({ ...prev, authMode: mode })),
   };
 };

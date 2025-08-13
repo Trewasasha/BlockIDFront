@@ -40,7 +40,6 @@ export const Header = () => {
         <div className={styles.actions}>
           <Link to="/cart" className={styles.iconLink} aria-label="Корзина">
             <ShoppingCart size={20} />
-            <span className={styles.badge}>0</span>
           </Link>
           <Link 
             to="/profile" 
@@ -64,14 +63,15 @@ export const Header = () => {
               &times;
             </button>
             
-            <h3>{authMode === 'login' ? 'Вход' : 'Регистрация'}</h3>
+            <div className={styles.modalHeader}>
+              <h3>{authMode === 'login' ? 'Вход' : 'Регистрация'}</h3>
+            </div>
             
-            {error && <p className={styles.error}>{error}</p>}
-            
-            <form onSubmit={handleAuth}>
+            <form className={styles.authForm} onSubmit={handleAuth}>
               <div className={styles.formGroup}>
                 <label htmlFor="email">Email</label>
                 <input
+                  className={styles.formInput}
                   type="email"
                   id="email"
                   value={email}
@@ -84,6 +84,7 @@ export const Header = () => {
               <div className={styles.formGroup}>
                 <label htmlFor="password">Пароль</label>
                 <input
+                  className={styles.formInput}
                   type="password"
                   id="password"
                   value={password}
@@ -92,12 +93,14 @@ export const Header = () => {
                   disabled={isLoading}
                   minLength={6}
                 />
+                {error && <p className={styles.errorMessage}>{error}</p>}
               </div>
               
               {authMode === 'register' && (
                 <div className={styles.formGroup}>
                   <label htmlFor="confirmPassword">Подтвердите пароль</label>
                   <input
+                    className={styles.formInput}
                     type="password"
                     id="confirmPassword"
                     value={confirmPassword}
@@ -107,7 +110,7 @@ export const Header = () => {
                     minLength={6}
                   />
                   {passwordError && (
-                    <p className={styles.passwordError}>{passwordError}</p>
+                    <p className={styles.errorMessage}>{passwordError}</p>
                   )}
                 </div>
               )}
@@ -117,13 +120,13 @@ export const Header = () => {
                 className={styles.authButton}
                 disabled={isLoading}
               >
-                {isLoading ? 'Загрузка...' : authMode === 'login' ? 'Войти' : 'Зарегистрироваться'}
+                {authMode === 'login' ? 'Войти' : 'Зарегистрироваться'}
               </button>
             </form>
             
             <div className={styles.authSwitch}>
               {authMode === 'login' ? (
-                <p>
+                <p className={styles.authSwitchText}>
                   Нет аккаунта?{' '}
                   <button 
                     type="button" 
@@ -134,7 +137,7 @@ export const Header = () => {
                   </button>
                 </p>
               ) : (
-                <p>
+                <p className={styles.authSwitchText}>
                   Уже есть аккаунт?{' '}
                   <button 
                     type="button" 
@@ -148,7 +151,7 @@ export const Header = () => {
             </div>
             
             <div className={styles.socialAuth}>
-              <p>Или войти через:</p>
+              <p className={styles.authSwitchText}>Или войти через:</p>
               <div className={styles.socialButtons}>
                 <button 
                   type="button"
@@ -156,15 +159,8 @@ export const Header = () => {
                   onClick={() => login('VK')}
                   disabled={isLoading}
                 >
-                  <img src="/vk-icon.png" alt="Вконтакте" width={20} height={20} />
-                </button>
-                <button 
-                  type="button"
-                  className={styles.socialButton}
-                  onClick={() => login('Yandex')}
-                  disabled={isLoading}
-                >
-                  <img src="/yandex-icon.png" alt="Яндекс" width={20} height={20} />
+                  <img src="../../../public/vk.png" alt="Вконтакте" width={40} height={40} />
+                  VK
                 </button>
                 <button 
                   type="button"
@@ -172,7 +168,8 @@ export const Header = () => {
                   onClick={() => login('Google')}
                   disabled={isLoading}
                 >
-                  <img src="/google-icon.png" alt="Google" width={20} height={20} />
+                  <img src="../../../public/google.png" alt="Google" width={40} height={40} />
+                  Google
                 </button>
               </div>
             </div>
