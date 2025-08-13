@@ -1,114 +1,33 @@
 .cart {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
-  font-family: 'Arial', sans-serif;
-  color: #333;
-}
-
-.title {
-  color: #84807f;
-  font-size: 2rem;
-  margin-bottom: 2rem;
-  text-align: center;
-  border-bottom: 2px solid #b4a7a0;
-  padding-bottom: 0.5rem;
-}
-
-.subtitle {
-  color: #84807f;
-  font-size: 1.3rem;
-  margin-bottom: 1.5rem;
+  padding: 4rem;
 }
 
 .summary {
   background: white;
-  border: 1px solid #b4a7a0;
-  border-radius: 10px;
-  padding: 2rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 4rem;
 }
 
 .payment {
   background: white;
-  border: 1px solid #b4a7a0;
-  border-radius: 10px;
-  padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
 }
 
-.item {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.total {
-  display: flex;
-  justify-content: space-between;
-  margin: 1.5rem 0;
-  font-weight: bold;
-  font-size: 1.1rem;
-}
-
-.price {
-  color: #84807f;
-  font-weight: bold;
-}
-
-.select {
-  width: 100%;
-  padding: 0.8rem;
-  border: 1px solid #b4a7a0;
-  border-radius: 6px;
-  margin-bottom: 1.5rem;
-  font-size: 1rem;
-  color: #333;
-  background-color: #f9f9f9;
-}
-
-.checkoutBtn, .payBtn {
-  width: 100%;
-  padding: 1rem;
-  border: none;
-  border-radius: 6px;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.checkoutBtn {
-  background-color: #b4a7a0;
-  color: white;
-}
-
-.checkoutBtn:hover {
-  background-color: #a09792;
-}
-
-.payBtn {
-  background-color: #84807f;
-  color: white;
-}
-
-.payBtn:hover {
-  background-color: #726e6d;
+.payment select {
+  padding: 0.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background: white;
 }
 
 @media (max-width: 768px) {
   .cart {
     padding: 1rem;
-  }
-  
-  .title {
-    font-size: 1.5rem;
-  }
-  
-  .summary, .payment {
-    padding: 1.5rem;
   }
 }

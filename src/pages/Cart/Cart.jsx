@@ -2,27 +2,18 @@ import styles from './Cart.module.css';
 
 export const Cart = () => (
   <div className={styles.cart}>
-    <h2 className={styles.title}>Корзина</h2>
+    <h2>Корзина</h2>
     <div className={styles.summary}>
-      <h3 className={styles.subtitle}>Ваш заказ</h3>
-      <div className={styles.item}>
-        <p>Прямо</p>
-        <p className={styles.price}>9 999 ₽</p>
-      </div>
-      <div className={styles.total}>
-        <p>Итого:</p>
-        <p className={styles.price}>9 999 ₽</p>
-      </div>
-      <button className={styles.checkoutBtn}>Оформить заказ</button>
+      <p>Прямо</p>
+      <p>Стоимость: 9999 ₽</p>
+      <button>Оформить</button>
     </div>
     <div className={styles.payment}>
-      <h3 className={styles.subtitle}>Способ оплаты</h3>
-      <select className={styles.select}>
-        <option>Выберите способ оплаты</option>
-        <option>Электронный кошелек</option>
-        <option>Наличные при получении</option>
+      <h3>Выбор карты</h3>
+      <select>
+        <option>Способ получения</option>
       </select>
-      <button className={styles.payBtn}>Оплатить сейчас</button>
+      <button>оплатить</button>
     </div>
   </div>
 );

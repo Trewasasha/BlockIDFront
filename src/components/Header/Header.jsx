@@ -1,4 +1,4 @@
-import { ShoppingCart, User, X } from 'react-feather';
+import { ShoppingCart, User } from 'react-feather';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../UseAuth/useAuth';
 import styles from './Header.module.css';
@@ -40,7 +40,7 @@ export const Header = () => {
         <div className={styles.actions}>
           <Link to="/cart" className={styles.iconLink} aria-label="Корзина">
             <ShoppingCart size={20} />
-            {/* <span className={styles.badge}>0</span> */}
+            <span className={styles.badge}>0</span>
           </Link>
           <Link 
             to="/profile" 
@@ -56,62 +56,58 @@ export const Header = () => {
       {isAuthModalOpen && (
         <div className={styles.authModal}>
           <div className={styles.modalContent}>
-            <div className={styles.modalHeader}>
-              <h3>{authMode === 'login' ? 'Вход в аккаунт' : 'Создать аккаунт'}</h3>
-              <button 
-                className={styles.closeButton}
-                onClick={closeAuthModal}
-                disabled={isLoading}
-              >
-                <X size={20} />
-              </button>
-            </div>
+            <button 
+              className={styles.closeButton}
+              onClick={closeAuthModal}
+              disabled={isLoading}
+            >
+              &times;
+            </button>
             
-            {error && <div className={styles.errorMessage}>{error}</div>}
+            <h3>{authMode === 'login' ? 'Вход' : 'Регистрация'}</h3>
             
-            <form onSubmit={handleAuth} className={styles.authForm}>
+            {error && <p className={styles.error}>{error}</p>}
+            
+            <form onSubmit={handleAuth}>
               <div className={styles.formGroup}>
+                <label htmlFor="email">Email</label>
                 <input
                   type="email"
                   id="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Email"
                   required
                   disabled={isLoading}
-                  className={styles.formInput}
                 />
               </div>
               
               <div className={styles.formGroup}>
+                <label htmlFor="password">Пароль</label>
                 <input
                   type="password"
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Пароль"
                   required
                   disabled={isLoading}
                   minLength={6}
-                  className={styles.formInput}
                 />
               </div>
               
               {authMode === 'register' && (
                 <div className={styles.formGroup}>
+                  <label htmlFor="confirmPassword">Подтвердите пароль</label>
                   <input
                     type="password"
                     id="confirmPassword"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="Подтвердите пароль"
                     required
                     disabled={isLoading}
                     minLength={6}
-                    className={styles.formInput}
                   />
                   {passwordError && (
-                    <div className={styles.errorMessage}>{passwordError}</div>
+                    <p className={styles.passwordError}>{passwordError}</p>
                   )}
                 </div>
               )}
@@ -121,46 +117,63 @@ export const Header = () => {
                 className={styles.authButton}
                 disabled={isLoading}
               >
-                {isLoading ? (
-                  <span className={styles.spinner}></span>
-                ) : authMode === 'login' ? 'Войти' : 'Зарегистрироваться'}
+                {isLoading ? 'Загрузка...' : authMode === 'login' ? 'Войти' : 'Зарегистрироваться'}
               </button>
             </form>
             
-            <div className={styles.authFooter}>
-              <p className={styles.authSwitchText}>
-                {authMode === 'login' ? 'Ещё нет аккаунта?' : 'Уже есть аккаунт?'}
+            <div className={styles.authSwitch}>
+              {authMode === 'login' ? (
+                <p>
+                  Нет аккаунта?{' '}
+                  <button 
+                    type="button" 
+                    onClick={() => setAuthMode('register')}
+                    className={styles.switchButton}
+                  >
+                    Зарегистрироваться
+                  </button>
+                </p>
+              ) : (
+                <p>
+                  Уже есть аккаунт?{' '}
+                  <button 
+                    type="button" 
+                    onClick={() => setAuthMode('login')}
+                    className={styles.switchButton}
+                  >
+                    Войти
+                  </button>
+                </p>
+              )}
+            </div>
+            
+            <div className={styles.socialAuth}>
+              <p>Или войти через:</p>
+              <div className={styles.socialButtons}>
                 <button 
-                  type="button" 
-                  onClick={() => setAuthMode(authMode === 'login' ? 'register' : 'login')}
-                  className={styles.switchButton}
+                  type="button"
+                  className={styles.socialButton}
+                  onClick={() => login('VK')}
+                  disabled={isLoading}
                 >
-                  {authMode === 'login' ? ' Зарегистрироваться' : ' Войти'}
+                  <img src="/vk-icon.png" alt="Вконтакте" width={20} height={20} />
                 </button>
-              </p>
-              
-              <div className={styles.socialAuth}>
-                <div className={styles.divider}>
-                  <span>или</span>
-                </div>
-                <div className={styles.socialButtons}>
-                  <button 
-                    type="button"
-                    className={`${styles.socialButton} ${styles.vk}`}
-                    onClick={() => login('VK')}
-                    disabled={isLoading}
-                  >
-                    ВКонтакте
-                  </button>
-                  <button 
-                    type="button"
-                    className={`${styles.socialButton} ${styles.google}`}
-                    onClick={() => login('Google')}
-                    disabled={isLoading}
-                  >
-                    Google
-                  </button>
-                </div>
+                <button 
+                  type="button"
+                  className={styles.socialButton}
+                  onClick={() => login('Yandex')}
+                  disabled={isLoading}
+                >
+                  <img src="/yandex-icon.png" alt="Яндекс" width={20} height={20} />
+                </button>
+                <button 
+                  type="button"
+                  className={styles.socialButton}
+                  onClick={() => login('Google')}
+                  disabled={isLoading}
+                >
+                  <img src="/google-icon.png" alt="Google" width={20} height={20} />
+                </button>
               </div>
             </div>
           </div>
