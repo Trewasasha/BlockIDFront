@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../UseAuth/useAuth';
 import styles from './Header.module.css';
 
+import vkIcon from '../../assets/vk.png';
+import googleIcon from '../../assets/google.png';
+
 export const Header = () => {
   const {
     isLoggedIn,
@@ -159,7 +162,7 @@ export const Header = () => {
                   onClick={() => login('VK')}
                   disabled={isLoading}
                 >
-                  <img src="../../../public/vk.png" alt="Вконтакте" width={40} height={40} />
+                  <img src={vkIcon} alt="Вконтакте" width={40} height={40} />
                   VK
                 </button>
                 <button 
@@ -168,7 +171,7 @@ export const Header = () => {
                   onClick={() => login('Google')}
                   disabled={isLoading}
                 >
-                  <img src="../../../public/google.png" alt="Google" width={40} height={40} />
+                  <img src={googleIcon} alt="Google" width={40} height={40} />
                   Google
                 </button>
               </div>

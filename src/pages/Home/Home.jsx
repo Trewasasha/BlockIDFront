@@ -1,5 +1,8 @@
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import styles from './Home.module.css';
+import design from '../../assets/2.jpg'
+import video from '../../assets/video/1224.mp4'
+
 
 export const Home = () => (
   <main className={styles.home}>
@@ -7,7 +10,7 @@ export const Home = () => (
     <section className={styles.hero}>
       <div className={styles.videoContainer}>
         <video autoPlay loop muted playsInline className={styles.heroVideo}>
-          <source src="../../../public/video/1224.mp4" type="video/mp4" />
+          <source src={video} type="video/mp4" />
           Ваш браузер не поддерживает видео.
         </video>
       </div>
@@ -18,7 +21,7 @@ export const Home = () => (
       <div className={styles.parallaxRow}>
         <div 
           className={styles.parallaxImage}
-          style={{ backgroundImage: "url('../../../public/2.jpg')" }}
+          style={{ backgroundImage: `url(${design})`}}
         />
         <div className={styles.featureCard}>
           <h3>Дизайн</h3>
@@ -29,7 +32,7 @@ export const Home = () => (
       <div className={styles.parallaxRow}>
         <div 
           className={styles.parallaxImage}
-          style={{ backgroundImage: "url('../../../public/2.jpg')" }}
+          style={{ backgroundImage: `url(${design})`}}
         />
         <div className={styles.featureCard}>
           <h3>Скорость</h3>
@@ -40,7 +43,7 @@ export const Home = () => (
       <div className={styles.parallaxRow}>
         <div 
           className={styles.parallaxImage}
-          style={{ backgroundImage: "url('../../../public/2.jpg')" }}
+          style={{ backgroundImage: `url(${design})` }}
         />
         <div className={styles.featureCard}>
           <h3>Качество</h3>
