@@ -5,13 +5,19 @@
 
 .hero {
   width: 100%;
-  height: 90vh;
+  height: 100vh;
   overflow: hidden;
+  position: relative;
+  margin-top: -5.6vw; 
 }
 
 .videoContainer {
   width: 100%;
   height: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  margin: 0 auto;
+  /* max-width: 95%; */
 }
 
 .heroVideo {
@@ -26,24 +32,41 @@
   margin: 0 auto;
 }
 
-.parallaxRow {
-  display: flex;
-  align-items: center;
-  margin-bottom: 2rem;
+.parallaxGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
 }
 
-.parallaxImage {
+.parallaxColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.parallaxColumn:nth-child(3) {
+  grid-column: span 2;
+  flex-direction: row;
+  align-items: center;
+}
+
+.parallaxColumn:nth-child(3) .parallaxImage {
   flex: 1;
-  height: 300px;
+}
+
+.parallaxColumn:nth-child(3) .featureCard {
+  flex: 1;
+}
+
+
+.parallaxImage {
+  height: 200px;
   background-size: cover;
   background-position: center;
   border-radius: 8px;
-  background-attachment: fixed;
 }
 
 .featureCard {
-  flex: 1;
   padding: 1.5rem;
   background: white;
   border: 1px solid #e0e0e0;
@@ -69,10 +92,46 @@
   margin: 0 auto;
 }
 
+.productsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.productsRow {
+  display: flex;
+  gap: 2rem;
+  justify-content: space-between;
+}
+
 .productsGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 5rem;
+  display: none;
+}
+
+.horizontalCard {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  height: 200px;
+  padding: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+  border: 1px solid #e0e0e0;
+}
+
+.horizontalImage {
+  width: 40%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.horizontalContent {
+  width: 60%;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .sectionTitle {

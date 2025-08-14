@@ -1,114 +1,301 @@
 .cart {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
-  font-family: 'Arial', sans-serif;
-  color: #333;
+  padding: 20px;
+  background-color: #f8f8f8;
 }
 
 .title {
-  color: #84807f;
-  font-size: 2rem;
-  margin-bottom: 2rem;
-  text-align: center;
-  border-bottom: 2px solid #b4a7a0;
-  padding-bottom: 0.5rem;
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #333;
 }
 
-.subtitle {
+.cartContent {
+  display: flex;
+  gap: 20px;
+}
+
+.itemsList {
+  flex: 2;
+}
+
+.cartItem {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  gap: 15px;
+}
+
+.itemSelect {
+  min-width: 30px;
+}
+
+.itemSelect input {
+  accent-color: #84807f;
+}
+
+.itemImage img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 5px;
+  background-color: white;
+}
+
+.itemInfo {
+  flex: 1;
+}
+
+.itemName {
+  font-size: 16px;
+  margin: 0 0 8px 0;
+  color: #333;
+}
+
+.itemSeller, .itemDelivery {
+  font-size: 14px;
   color: #84807f;
-  font-size: 1.3rem;
-  margin-bottom: 1.5rem;
+  margin: 4px 0;
+}
+
+.outOfStock {
+  color: #f44336;
+  font-size: 14px;
+}
+
+.itemPrice {
+  min-width: 120px;
+  text-align: right;
+}
+
+.currentPrice {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+  color: #333;
+}
+
+.originalPrice {
+  font-size: 14px;
+  color: #b4a7a0;
+  text-decoration: line-through;
+  margin: 0;
+}
+
+.itemQuantity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 120px;
+  justify-content: center;
+}
+
+.itemQuantity button {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #b4a7a0;
+  background: none;
+  border-radius: 40%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: #84807f;
+  transition: all 0.2s ease;
+}
+
+.itemQuantity button:hover {
+  background-color: #f0f0f0;
+}
+
+.quantitySymbol {
+  font-size: 18px;
+  line-height: 1;
+  margin-top: -1px; 
+}
+
+.quantityValue {
+  min-width: 20px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.itemQuantity button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: transparent;
+}
+
+.itemTotal {
+  min-width: 100px;
+  text-align: right;
+  font-weight: bold;
+  color: #333;
+}
+
+.itemActions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 120px;
+}
+
+.removeButton, .favoriteButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #84807f;
+  font-size: 14px;
+  text-align: left;
+  padding: 0 0 0 7px;
+  /* padding: 0; */
+}
+
+.removeButton:hover, .favoriteButton:hover {
+  color: #333;
+  text-decoration: underline;
 }
 
 .summary {
-  background: white;
-  border: 1px solid #b4a7a0;
-  border-radius: 10px;
-  padding: 2rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  flex: 1;
+  position: sticky;
+  top: 20px;
+  height: fit-content;
 }
 
-.payment {
-  background: white;
-  border: 1px solid #b4a7a0;
-  border-radius: 10px;
-  padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.item {
+.promoSection {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #f0f0f0;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
-.total {
-  display: flex;
-  justify-content: space-between;
-  margin: 1.5rem 0;
-  font-weight: bold;
-  font-size: 1.1rem;
-}
-
-.price {
-  color: #84807f;
-  font-weight: bold;
-}
-
-.select {
-  width: 100%;
-  padding: 0.8rem;
+.promoSection input {
+  flex: 1;
+  padding: 10px;
   border: 1px solid #b4a7a0;
-  border-radius: 6px;
-  margin-bottom: 1.5rem;
-  font-size: 1rem;
+  border-radius: 4px;
   color: #333;
-  background-color: #f9f9f9;
 }
 
-.checkoutBtn, .payBtn {
-  width: 100%;
-  padding: 1rem;
+.promoSection input::placeholder {
+  color: #b4a7a0;
+}
+
+.promoSection button {
+  padding: 10px 15px;
+  background: #84807f;
+  color: white;
   border: none;
-  border-radius: 6px;
-  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.promoSection button:hover {
+  background: #6d6968;
+}
+
+.promoSection button:disabled {
+  background: #b4a7a0;
+  cursor: not-allowed;
+}
+
+.orderSummary {
+  padding: 20px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 16px;
+  color: #84807f;
+}
+
+.discount {
+  color: #00a046;
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.totalPrice {
+  font-size: 20px;
+}
+
+.checkoutButton {
+  width: 100%;
+  padding: 15px;
+  background: #84807f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.2s;
+  margin-bottom: 15px;
+  transition: background 0.2s;
 }
 
-.checkoutBtn {
-  background-color: #b4a7a0;
+.checkoutButton:hover {
+  background: #6d6968;
+}
+
+.freeDelivery {
+  color: #00a046;
+  font-size: 14px;
+  text-align: center;
+  margin: 0;
+}
+
+.emptyCart {
+  text-align: center;
+  padding: 50px 0;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.emptyCart h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.emptyCart p {
+  font-size: 16px;
+  color: #84807f;
+  margin-bottom: 20px;
+}
+
+.catalogButton {
+  padding: 12px 24px;
+  background: #84807f;
   color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
-.checkoutBtn:hover {
-  background-color: #a09792;
-}
-
-.payBtn {
-  background-color: #84807f;
-  color: white;
-}
-
-.payBtn:hover {
-  background-color: #726e6d;
-}
-
-@media (max-width: 768px) {
-  .cart {
-    padding: 1rem;
-  }
-  
-  .title {
-    font-size: 1.5rem;
-  }
-  
-  .summary, .payment {
-    padding: 1.5rem;
-  }
+.catalogButton:hover {
+  background: #6d6968;
 }

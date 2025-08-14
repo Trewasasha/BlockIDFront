@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export const api = axios.create({
-  baseURL: 'http://185.135.80.107:8000/api/v1',
+  baseURL: 'http://localhost:8000/api/v1',
   headers: {
     'Content-Type': 'application/json'
   }
@@ -11,7 +11,7 @@ export const api = axios.create({
 
 // Интерцептор для автоматического добавления токена
 api.interceptors.request.use(config => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('access_token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -20,12 +20,13 @@ api.interceptors.request.use(config => {
   return Promise.reject(error);
 });
 
-// Интерцептор для обработки 401 ошибки
+// Интерцептор для обработки ошибок
 api.interceptors.response.use(
   response => response,
   error => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('token');
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
       window.dispatchEvent(new Event('unauthorized'));
     }
     return Promise.reject(error);
@@ -55,14 +56,15 @@ export const useAuth = () => {
 
   const checkAuth = async () => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('access_token');
       if (!token) throw new Error('No token found');
       
-      await api.get('/auth/check');
+      await api.get('/auth/me');
       setState(prev => ({ ...prev, isLoggedIn: true, isAuthChecking: false }));
     } catch (err) {
       console.error('Auth check error:', err);
-      localStorage.removeItem('token');
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
       setState(prev => ({ ...prev, isLoggedIn: false, isAuthChecking: false }));
     }
   };
@@ -104,10 +106,14 @@ export const useAuth = () => {
         return;
       }
 
-      const endpoint = state.authMode === 'login' ? '/auth/login' : '/register';
+      const endpoint = state.authMode === 'login' ? '/auth/login' : '/auth/register';
       const payload = state.authMode === 'login'
         ? new URLSearchParams({ username: state.email, password: state.password })
-        : { email: state.email, password: state.password, confirm_password: state.confirmPassword };
+        : { 
+            email: state.email, 
+            password: state.password, 
+            confirm_password: state.confirmPassword 
+          };
 
       const config = {
         headers: {
@@ -120,7 +126,8 @@ export const useAuth = () => {
       const response = await api.post(endpoint, payload, config);
 
       if (response.data.access_token) {
-        localStorage.setItem('token', response.data.access_token);
+        localStorage.setItem('access_token', response.data.access_token);
+        localStorage.setItem('refresh_token', response.data.refresh_token);
         setState(prev => ({ 
           ...prev, 
           isLoggedIn: true,
@@ -145,11 +152,12 @@ export const useAuth = () => {
 
   const logout = async () => {
     try {
-      await api.post('/logout');
+      await api.post('/auth/logout');
     } catch (err) {
       console.error('Ошибка при выходе:', err);
     } finally {
-      localStorage.removeItem('token');
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
       setState(prev => ({
         ...prev,
         isLoggedIn: false,
@@ -187,6 +195,22 @@ export const useAuth = () => {
     window.location.href = `${api.defaults.baseURL}/auth/${provider.toLowerCase()}`;
   };
 
+  const refreshToken = async () => {
+    try {
+      const refreshToken = localStorage.getItem('refresh_token');
+      if (!refreshToken) throw new Error('No refresh token');
+      
+      const response = await api.post('/auth/refresh', { refresh_token: refreshToken });
+      localStorage.setItem('access_token', response.data.access_token);
+      localStorage.setItem('refresh_token', response.data.refresh_token);
+      return true;
+    } catch (err) {
+      console.error('Token refresh failed:', err);
+      logout();
+      return false;
+    }
+  };
+
   return {
     ...state,
     setEmail: (email) => setState(prev => ({ ...prev, email })),
@@ -198,5 +222,6 @@ export const useAuth = () => {
     openAuthModal,
     closeAuthModal,
     setAuthMode: (mode) => setState(prev => ({ ...prev, authMode: mode })),
+    refreshToken
   };
 };

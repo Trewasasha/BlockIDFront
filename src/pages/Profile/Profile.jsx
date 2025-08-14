@@ -12,7 +12,7 @@ export const Profile = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await api.get('/me');
+        const response = await api.get('/auth/me');
         setUserData(response.data);
       } catch (err) {
         setError(

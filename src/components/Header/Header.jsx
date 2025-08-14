@@ -5,6 +5,7 @@ import styles from './Header.module.css';
 
 import vkIcon from '../../assets/vk.png';
 import googleIcon from '../../assets/google.png';
+import yandexIcon from '../../assets/яндекс.png';
 
 export const Header = () => {
   const {
@@ -38,7 +39,7 @@ export const Header = () => {
     <>
       <header className={styles.header}>
         <nav className={styles.nav}>
-          <Link to="/">Главная</Link>
+          <Link to="/">Black Кухни</Link>
         </nav>
         <div className={styles.actions}>
           <Link to="/cart" className={styles.iconLink} aria-label="Корзина">
@@ -163,7 +164,7 @@ export const Header = () => {
                   disabled={isLoading}
                 >
                   <img src={vkIcon} alt="Вконтакте" width={40} height={40} />
-                  VK
+                  
                 </button>
                 <button 
                   type="button"
@@ -172,7 +173,16 @@ export const Header = () => {
                   disabled={isLoading}
                 >
                   <img src={googleIcon} alt="Google" width={40} height={40} />
-                  Google
+                  
+                </button>
+                <button 
+                  type="button"
+                  className={styles.socialButton}
+                  onClick={() => login('Yandex')}
+                  disabled={isLoading}
+                >
+                  <img src={yandexIcon} alt="Google" width={40} height={40} />
+                  
                 </button>
               </div>
             </div>
