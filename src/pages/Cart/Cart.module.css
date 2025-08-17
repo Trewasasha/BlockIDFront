@@ -2,7 +2,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #f8f8f8;
+  background-color: #ffffff;
 }
 
 .title {
@@ -24,8 +24,7 @@
   display: flex;
   align-items: center;
   padding: 20px;
-  background-color: white;
-  border: 1px solid #e0e0e0;
+  background-color: #f8f8f8;
   border-radius: 8px;
   margin-bottom: 15px;
   gap: 15px;
@@ -210,8 +209,7 @@
 
 .orderSummary {
   padding: 20px;
-  background: white;
-  border: 1px solid #e0e0e0;
+  background: #f8f8f8;
   border-radius: 8px;
 }
 

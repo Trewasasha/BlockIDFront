@@ -39,7 +39,7 @@ export const Header = () => {
     <>
       <header className={styles.header}>
         <nav className={styles.nav}>
-          <Link to="/">Black Кухни</Link>
+          <Link to="/">Block Кухни</Link>
         </nav>
         <div className={styles.actions}>
           <Link to="/cart" className={styles.iconLink} aria-label="Корзина">

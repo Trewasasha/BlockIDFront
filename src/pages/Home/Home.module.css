@@ -17,7 +17,6 @@
   border-radius: 16px;
   overflow: hidden;
   margin: 0 auto;
-  /* max-width: 95%; */
 }
 
 .heroVideo {
@@ -34,7 +33,7 @@
 
 .parallaxGrid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
 }
 
@@ -44,7 +43,7 @@
   gap: 1rem;
 }
 
-.parallaxColumn:nth-child(3) {
+/* .parallaxColumn:nth-child(3) {
   grid-column: span 2;
   flex-direction: row;
   align-items: center;
@@ -56,7 +55,7 @@
 
 .parallaxColumn:nth-child(3) .featureCard {
   flex: 1;
-}
+} */
 
 
 .parallaxImage {
@@ -112,7 +111,7 @@
   flex: 1;
   display: flex;
   flex-direction: row;
-  height: 200px;
+  height: 300px;
   padding: 0;
   border-radius: 8px;
   overflow: hidden;
@@ -121,13 +120,13 @@
 }
 
 .horizontalImage {
-  width: 40%;
+  width: 50%;
   height: 100%;
   object-fit: cover;
 }
 
 .horizontalContent {
-  width: 60%;
+  width: 50%;
   padding: 1.5rem;
   display: flex;
   flex-direction: column;

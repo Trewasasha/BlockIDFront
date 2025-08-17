@@ -14,7 +14,6 @@ export const Cart = () => {
       count: 1,
       inStock: true,
       deliveryDate: 'Доставим завтра',
-      seller: 'Все инструменты',
       isSelected: true
     },
     {
@@ -26,7 +25,6 @@ export const Cart = () => {
       count: 2,
       inStock: true,
       deliveryDate: 'Доставим послезавтра',
-      seller: 'М.Видео',
       isSelected: true
     }
   ]);
@@ -77,7 +75,6 @@ export const Cart = () => {
                 
                 <div className={styles.itemInfo}>
                   <h3 className={styles.itemName}>{item.name}</h3>
-                  <p className={styles.itemSeller}>Продавец: {item.seller}</p>
                   <p className={styles.itemDelivery}>{item.deliveryDate}</p>
                   {!item.inStock && <p className={styles.outOfStock}>Нет в наличии</p>}
                 </div>
@@ -114,7 +111,6 @@ export const Cart = () => {
                   >
                     Удалить
                   </button>
-                  <button className={styles.favoriteButton}>В избранное</button>
                 </div>
               </div>
             ))}
