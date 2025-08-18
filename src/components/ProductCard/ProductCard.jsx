@@ -1,4 +1,5 @@
 import styles from './ProductCard.module.css';
+import { ShoppingCart } from 'react-feather'; // Импортируем иконку корзины
 
 export const ProductCard = ({ title, image, horizontal = false }) => {
   if (horizontal) {
@@ -8,7 +9,9 @@ export const ProductCard = ({ title, image, horizontal = false }) => {
         <div className={styles.horizontalContent}>
           <h3 className={styles.title}>{title}</h3>
           <p className={styles.subtitle}>Название блока</p>
-          <button className={styles.button}>Добавить в корзину</button>
+          <div className={styles.cartIcon}>
+            <ShoppingCart size={20} />
+          </div>
         </div>
       </div>
     );
@@ -19,7 +22,9 @@ export const ProductCard = ({ title, image, horizontal = false }) => {
       <img src={image} alt={title} className={styles.image} />
       <h3 className={styles.title}>{title}</h3>
       <p className={styles.subtitle}>Название блока</p>
-      <button className={styles.button}>Добавить в корзину</button>
+      <div className={styles.cartIcon}>
+        <ShoppingCart size={20} />
+      </div>
     </div>
   );
 };

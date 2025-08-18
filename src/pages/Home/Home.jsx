@@ -25,11 +25,13 @@ export const Home = () => (
   <main className={styles.home}>
     {/* Герой-секция с видео */}
     <section className={styles.hero}>
-      <div className={styles.videoContainer}>
-        <video autoPlay loop muted playsInline className={styles.heroVideo}>
-          <source src={video} type="video/mp4" />
-          Ваш браузер не поддерживает видео.
-        </video>
+      <div className={styles.heroContent}>
+        <div className={styles.videoContainer}>
+          <video autoPlay loop muted playsInline className={styles.heroVideo}>
+            <source src={video} type="video/mp4" />
+            Ваш браузер не поддерживает видео.
+          </video>
+        </div>
       </div>
     </section>
 

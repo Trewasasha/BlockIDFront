@@ -8,7 +8,15 @@
   height: 100vh;
   overflow: hidden;
   position: relative;
-  margin-top: -5.6vw; 
+}
+
+.heroContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .videoContainer {
@@ -16,13 +24,13 @@
   height: 100%;
   border-radius: 16px;
   overflow: hidden;
-  margin: 0 auto;
 }
 
 .heroVideo {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  max-width: 1920px;
 }
 
 .parallaxSection {
@@ -42,21 +50,6 @@
   flex-direction: column;
   gap: 1rem;
 }
-
-/* .parallaxColumn:nth-child(3) {
-  grid-column: span 2;
-  flex-direction: row;
-  align-items: center;
-}
-
-.parallaxColumn:nth-child(3) .parallaxImage {
-  flex: 1;
-}
-
-.parallaxColumn:nth-child(3) .featureCard {
-  flex: 1;
-} */
-
 
 .parallaxImage {
   height: 200px;
@@ -120,13 +113,17 @@
 }
 
 .horizontalImage {
-  width: 50%;
+  width: 70%;
   height: 100%;
   object-fit: cover;
 }
 
+.horizontalImage:hover {
+  transform: scale(1.05);
+}
+
 .horizontalContent {
-  width: 50%;
+  width: 40%;
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
@@ -152,8 +149,17 @@
 }
 
 @media (max-width: 768px) {
-  .hero {
+    .hero {
     height: 40vh;
+  }
+  
+  .heroContent {
+    padding: 0 1.5rem;
+  }
+  
+  .videoContainer {
+    height: 100%;
+    border-radius: 0;
   }
   
   .parallaxRow {
@@ -166,6 +172,11 @@
 }
 
 @media (max-width: 480px) {
+
+  .heroContent {
+    padding: 0 1rem;
+  }
+
   .productsGrid {
     grid-template-columns: 1fr;
     max-width: 400px;
