@@ -10,7 +10,7 @@ export const ProductCard = ({ title, image, horizontal = false }) => {
           <h3 className={styles.title}>{title}</h3>
           <p className={styles.subtitle}>Название блока</p>
           <div className={styles.cartIcon}>
-            <ShoppingCart size={20} />
+            <ShoppingCart size={40} />
           </div>
         </div>
       </div>

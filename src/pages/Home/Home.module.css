@@ -79,29 +79,18 @@
 }
 
 .productsSection {
-  padding: 5rem 2rem;
+  padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .productsContainer {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
-}
-
-.productsRow {
-  display: flex;
-  gap: 2rem;
-  justify-content: space-between;
-}
-
-.productsGrid {
-  display: none;
 }
 
 .horizontalCard {
-  flex: 1;
   display: flex;
   flex-direction: row;
   height: 300px;
@@ -116,6 +105,7 @@
   width: 70%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
 .horizontalImage:hover {
@@ -138,18 +128,13 @@
 }
 
 @media (max-width: 1024px) {
-  .productsGrid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
-  
   .parallaxImage {
     height: 250px;
   }
 }
 
 @media (max-width: 768px) {
-    .hero {
+  .hero {
     height: 40vh;
   }
   
@@ -162,30 +147,38 @@
     border-radius: 0;
   }
   
-  .parallaxRow {
-    flex-direction: column;
+  .productsContainer {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+    margin: 0 auto;
   }
   
   .productsSection {
     padding: 3rem 1.5rem;
   }
+  
+  .horizontalCard {
+    height: auto;
+    flex-direction: column;
+  }
+  
+  .horizontalImage,
+  .horizontalContent {
+    width: 100%;
+  }
 }
 
 @media (max-width: 480px) {
-
   .heroContent {
     padding: 0 1rem;
   }
-
-  .productsGrid {
+  
+  .parallaxGrid {
     grid-template-columns: 1fr;
-    max-width: 400px;
-    margin: 0 auto;
   }
   
   .parallaxImage {
     height: 200px;
-    width: 100%;
     background-attachment: scroll;
   }
   

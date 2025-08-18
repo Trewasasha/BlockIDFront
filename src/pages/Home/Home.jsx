@@ -73,34 +73,19 @@ export const Home = () => (
       </div>
     </section>
 
-    {/* Секция с товарами */}
-    <section className={styles.productsSection}>
-      <h2 className={styles.sectionTitle}>Наши товары</h2>
-      <div className={styles.productsContainer}>
-        {/* Первый ряд из 3 товаров */}
-        <div className={styles.productsRow}>
-          {products.slice(0, 3).map(product => (
-            <ProductCard 
-              key={product.id}
-              title={product.title}
-              image={product.image}
-              horizontal
-            />
-          ))}
-        </div>
-        
-        {/* Второй ряд из 3 товаров */}
-        <div className={styles.productsRow}>
-          {products.slice(3, 6).map(product => (
-            <ProductCard 
-              key={product.id}
-              title={product.title}
-              image={product.image}
-              horizontal
-            />
-          ))}
-        </div>
-      </div>
-    </section>
+{/* Секция с товарами */}
+<section className={styles.productsSection}>
+  <h2 className={styles.sectionTitle}>Наши товары</h2>
+  <div className={styles.productsContainer}>
+    {products.map(product => (
+      <ProductCard 
+        key={product.id}
+        title={product.title}
+        image={product.image}
+        horizontal
+      />
+    ))}
+  </div>
+</section>
   </main>
 );

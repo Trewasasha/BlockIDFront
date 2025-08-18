@@ -21,7 +21,7 @@
   border-radius: 8px;
   overflow: hidden;
   display: flex;
-  height: 200px;
+  height: 50vh;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -51,13 +51,13 @@
 .title {
   color: #333333;
   margin: 0.5rem 0;
-  font-size: 1.2rem;
+  font-size: 2rem;
 }
 
 .subtitle {
   color: #84807f;
   margin: 0.5rem 0 1rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .horizontalContent {
