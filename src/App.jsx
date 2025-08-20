@@ -7,6 +7,7 @@ import { Catalog } from './pages/Catalog/Catalog';
 import { Profile } from './pages/Profile/Profile';
 import { useAuth } from './components/UseAuth/useAuth';
 import { CartProvider } from './context/CartContext'; 
+import { AuthModal } from './components/AuthModal/AuthModal';
 import './App.css';
 
 const ProtectedRoute = ({ children }) => {
@@ -28,31 +29,58 @@ const ProtectedRoute = ({ children }) => {
   return isLoggedIn ? children : <Navigate to="/" replace />;
 };
 
+// Основной компонент приложения
+const AppContent = () => {
+  const auth = useAuth(); // Теперь useAuth() вызывается внутри BrowserRouter
+
+  return (
+    <div className="app">
+      <Header auth={auth} />
+      
+      <main className="main-content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/catalog" element={<Catalog/> } />
+          <Route path="/cart" element={<Cart auth={auth} />} />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </main>
+      
+      <AuthModal 
+        isAuthModalOpen={auth.isAuthModalOpen}
+        authMode={auth.authMode}
+        email={auth.email}
+        password={auth.password}
+        confirmPassword={auth.confirmPassword}
+        isLoading={auth.isLoading}
+        error={auth.error}
+        passwordError={auth.passwordError}
+        setEmail={auth.setEmail}
+        setPassword={auth.setPassword}
+        setConfirmPassword={auth.setConfirmPassword}
+        handleAuth={auth.handleAuth}
+        loginWithProvider={auth.loginWithProvider}
+        closeAuthModal={auth.closeAuthModal}
+        setAuthMode={auth.setAuthMode}
+      />
+      
+      <Footer />
+    </div>
+  );
+};
+
 export const App = () => {
   return (
     <BrowserRouter>
       <CartProvider> 
-        <div className="app">
-          <Header />
-          
-          <main className="main-content">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/catalog" element={<Catalog/> } />
-              <Route path="/cart" element={<Cart />} />
-              <Route
-                path="/profile"
-                element={
-                  <ProtectedRoute>
-                    <Profile />
-                  </ProtectedRoute>
-                }
-              />
-            </Routes>
-          </main>
-          
-          <Footer />
-        </div>
+        <AppContent />
       </CartProvider>
     </BrowserRouter>
   );

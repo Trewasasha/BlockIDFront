@@ -1,15 +1,14 @@
-// Cart.jsx
 import styles from './Cart.module.css';
 import { useState, useEffect } from 'react';
 import { useCart } from '../../context/CartContext';
-import { useAuth } from '../../components/UseAuth/useAuth';
+// import { useAuth } from '../../components/UseAuth/useAuth';
 import block from '../../assets/product/placeholder-product-1.jpg';
 import { useNavigate } from 'react-router-dom';
 
-export const Cart = () => {
+export const Cart = ({auth}) => {
   const [selectedItems, setSelectedItems] = useState(new Set());
   const { cartItems, loading, updateCartItem, removeFromCart, refreshCart } = useCart();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, openAuthModal } = auth || {};
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -82,7 +81,7 @@ export const Cart = () => {
           <p>Войдите в систему для просмотра корзины</p>
           <button 
             className={styles.catalogButton}
-            onClick={() => navigate('/login')}
+            onClick={() => openAuthModal('login')}
           >
             Войти в систему
           </button>
