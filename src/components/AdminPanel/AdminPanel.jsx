@@ -14,7 +14,7 @@ export const AdminPanel = () => {
   const [error, setError] = useState('');
   const [editingProduct, setEditingProduct] = useState(null);
   
-  const { user } = useAuth();
+  const { user, isAuthChecking } = useAuth();
   const navigate = useNavigate();
 
   const fetchProducts = useCallback(async () => {
@@ -123,13 +123,17 @@ export const AdminPanel = () => {
   };
 
   useEffect(() => {
-    if (user && user.role !== 'ADMIN') {
+    if (!isAuthChecking && user && user.role !== 'ADMIN') {
       navigate('/');
       alert('Доступ запрещен');
-    } else if (user?.role === 'ADMIN') {
+    } else if (!isAuthChecking && user?.role === 'ADMIN') {
       fetchData();
     }
-  }, [activeTab, user, navigate, fetchData]);
+  }, [activeTab, user, navigate, fetchData, isAuthChecking]);
+
+  if (isAuthChecking) {
+    return <div className={styles.loading}>Проверка доступа...</div>;
+  }
 
   if (user?.role !== 'ADMIN') {
     return <div className={styles.accessDenied}>Доступ запрещен</div>;
