@@ -9,7 +9,6 @@ export const api = axios.create({
   }
 });
 
-
 // Интерцептор для автоматического добавления токена
 api.interceptors.request.use(config => {
   const token = localStorage.getItem('access_token');
@@ -50,7 +49,8 @@ export const useAuth = () => {
     confirmPassword: '',
     isLoading: false,
     error: null,
-    passwordError: ''
+    passwordError: '',
+    user: null
   });
 
   const navigate = useNavigate();
@@ -60,13 +60,23 @@ export const useAuth = () => {
       const token = localStorage.getItem('access_token');
       if (!token) throw new Error('No token found');
       
-      await api.get('/auth/me');
-      setState(prev => ({ ...prev, isLoggedIn: true, isAuthChecking: false }));
+      const userResponse = await api.get('/auth/me');
+      setState(prev => ({ 
+        ...prev, 
+        isLoggedIn: true, 
+        isAuthChecking: false,
+        user: userResponse.data 
+      }));
     } catch (err) {
       console.error('Auth check error:', err);
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
-      setState(prev => ({ ...prev, isLoggedIn: false, isAuthChecking: false }));
+      setState(prev => ({ 
+        ...prev, 
+        isLoggedIn: false, 
+        isAuthChecking: false,
+        user: null 
+      }));
     }
   };
 
@@ -74,7 +84,11 @@ export const useAuth = () => {
     checkAuth();
 
     const handleUnauthorized = () => {
-      setState(prev => ({ ...prev, isLoggedIn: false }));
+      setState(prev => ({ 
+        ...prev, 
+        isLoggedIn: false,
+        user: null 
+      }));
       navigate('/');
     };
 
@@ -129,6 +143,9 @@ export const useAuth = () => {
       if (response.data.access_token) {
         localStorage.setItem('access_token', response.data.access_token);
         localStorage.setItem('refresh_token', response.data.refresh_token);
+        
+        const userResponse = await api.get('/auth/me');
+        
         setState(prev => ({ 
           ...prev, 
           isLoggedIn: true,
@@ -136,7 +153,8 @@ export const useAuth = () => {
           isLoading: false,
           email: '',
           password: '',
-          confirmPassword: ''
+          confirmPassword: '',
+          user: userResponse.data
         }));
         navigate('/profile');
       } else {
@@ -164,7 +182,8 @@ export const useAuth = () => {
         isLoggedIn: false,
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        user: null
       }));
       navigate('/');
     }
@@ -245,7 +264,6 @@ api.interceptors.response.use(
           localStorage.setItem('access_token', response.data.access_token);
           localStorage.setItem('refresh_token', response.data.refresh_token);
           
-          // Повторяем оригинальный запрос
           originalRequest.headers.Authorization = `Bearer ${response.data.access_token}`;
           return api(originalRequest);
         }

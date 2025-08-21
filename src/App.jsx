@@ -5,6 +5,7 @@ import { Home } from './pages/Home/Home';
 import { Cart } from './pages/Cart/Cart';
 import { Catalog } from './pages/Catalog/Catalog';
 import { Profile } from './pages/Profile/Profile';
+import { AdminPanel } from './components/AdminPanel/AdminPanel';
 import { useAuth } from './components/UseAuth/useAuth';
 import { CartProvider } from './context/CartContext'; 
 import { AuthModal } from './components/AuthModal/AuthModal';
@@ -29,9 +30,36 @@ const ProtectedRoute = ({ children }) => {
   return isLoggedIn ? children : <Navigate to="/" replace />;
 };
 
+const AdminRoute = ({ children }) => {
+  const { isLoggedIn, isAuthChecking, user } = useAuth();
+  
+  if (isAuthChecking) {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh'
+      }}>
+        <div>Проверка авторизации...</div>
+      </div>
+    );
+  }
+  
+  if (!isLoggedIn) {
+    return <Navigate to="/" replace />;
+  }
+  
+  if (user?.role !== 'ADMIN') {
+    return <Navigate to="/profile" replace />;
+  }
+  
+  return children;
+};
+
 // Основной компонент приложения
 const AppContent = () => {
-  const auth = useAuth(); // Теперь useAuth() вызывается внутри BrowserRouter
+  const auth = useAuth();
 
   return (
     <div className="app">
@@ -40,7 +68,7 @@ const AppContent = () => {
       <main className="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/catalog" element={<Catalog/> } />
+          <Route path="/catalog" element={<Catalog />} />
           <Route path="/cart" element={<Cart auth={auth} />} />
           <Route
             path="/profile"
@@ -48,6 +76,14 @@ const AppContent = () => {
               <ProtectedRoute>
                 <Profile />
               </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <AdminPanel />
+              </AdminRoute>
             }
           />
         </Routes>

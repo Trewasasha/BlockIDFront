@@ -2,10 +2,12 @@ import styles from './ProductCard.module.css';
 import { ShoppingCart } from 'react-feather';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../UseAuth/useAuth';
+import { getImageUrl } from '../../utils/ImageHelper';
 
 export const ProductCard = ({ product, horizontal = false }) => {
   const { isLoggedIn, openAuthModal } = useAuth();
   const { addToCart, loading } = useCart();
+  const imageUrl = getImageUrl(product.image_url || product.image);
 
   const handleAddToCart = async () => {
     if (!isLoggedIn) {
@@ -25,7 +27,7 @@ export const ProductCard = ({ product, horizontal = false }) => {
   if (horizontal) {
     return (
       <div className={styles.horizontalCard}>
-        <img src={product.image_url || product.image} alt={product.name} className={styles.horizontalImage} />
+        <img src={imageUrl} alt={product.name} className={styles.horizontalImage} />
         <div className={styles.horizontalContent}>
           <h3 className={styles.title}>{product.name}</h3>
           <p className={styles.subtitle}>{product.category}</p>
