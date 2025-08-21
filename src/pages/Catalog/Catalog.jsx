@@ -7,12 +7,8 @@ import block from '../../assets/product/placeholder-product-1.jpg';
 
 export const Catalog = () => {
   const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [sortBy, setSortBy] = useState('name');
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState(null);
   const [pagination, setPagination] = useState({
@@ -29,10 +25,6 @@ export const Catalog = () => {
     fetchProducts();
   }, [pagination.page, pagination.limit]);
 
-  useEffect(() => {
-    filterProducts();
-  }, [searchTerm, selectedCategory, sortBy, products]);
-
   const fetchProducts = async () => {
     try {
       setLoading(true);
@@ -47,7 +39,6 @@ export const Catalog = () => {
         
         if (Array.isArray(productsData)) {
           setProducts(productsData);
-          
           
           // Обновляем пагинацию
           const totalItems = response.data.total || response.data.count || productsData.length;
@@ -80,44 +71,6 @@ export const Catalog = () => {
       // Возвращаем базовую информацию из списка, если детали не загрузились
       return products.find(p => p.id === productId) || {};
     }
-  };
-
-  const filterProducts = () => {
-    let filtered = [...products];
-
-    // Фильтрация по поиску
-    if (searchTerm) {
-      filtered = filtered.filter(product =>
-        (product.name?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-        (product.description?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-        (product.category?.toLowerCase() || '').includes(searchTerm.toLowerCase())
-      );
-    }
-
-    // Фильтрация по категории
-    if (selectedCategory !== 'all') {
-      filtered = filtered.filter(product => product.category === selectedCategory);
-    }
-
-    // Сортировка
-    filtered.sort((a, b) => {
-      switch (sortBy) {
-        case 'price-asc':
-          return (a.price || 0) - (b.price || 0);
-        case 'price-desc':
-          return (b.price || 0) - (a.price || 0);
-        case 'name':
-          return (a.name || '').localeCompare(b.name || '');
-        case 'rating':
-          return (b.rating || 0) - (a.rating || 0);
-        case 'newest':
-          return new Date(b.created_at || 0) - new Date(a.created_at || 0);
-        default:
-          return 0;
-      }
-    });
-
-    setFilteredProducts(filtered);
   };
 
   const handleAddToCart = async (product, qty = 1) => {
@@ -174,13 +127,6 @@ export const Catalog = () => {
     }
   };
 
-  const resetFilters = () => {
-    setSearchTerm('');
-    setSelectedCategory('all');
-    setSortBy('name');
-    setPagination(prev => ({ ...prev, page: 1 }));
-  };
-
   // Функция для безопасного форматирования цены
   const formatPrice = (price) => {
     if (price === undefined || price === null) return '0';
@@ -219,23 +165,16 @@ export const Catalog = () => {
     <div className={styles.catalog}>
       <h1 className={styles.title}>Каталог товаров</h1>
 
-
       {/* Информация о результате */}
       <div className={styles.resultsInfo}>
-        <p>Показано: {filteredProducts.length} из {pagination.total} товаров</p>
-        {searchTerm && (
-          <p>По запросу "{searchTerm}"</p>
-        )}
-        {selectedCategory !== 'all' && (
-          <p>Категория: {selectedCategory}</p>
-        )}
+        <p>Показано: {products.length} из {pagination.total} товаров</p>
       </div>
 
       {/* Сетка товаров */}
-      {filteredProducts.length > 0 ? (
+      {products.length > 0 ? (
         <>
           <div className={styles.productsGrid}>
-            {filteredProducts.map(product => {
+            {products.map(product => {
               const hasDiscount = product.original_price > product.price;
               const discountAmount = hasDiscount ? product.original_price - product.price : 0;
               const discountPercent = hasDiscount && product.original_price > 0
@@ -377,12 +316,11 @@ export const Catalog = () => {
       ) : (
         <div className={styles.emptyState}>
           <h3>Товары не найдены</h3>
-          <p>Попробуйте изменить параметры поиска или выбрать другую категорию</p>
           <button
             className={styles.catalogButton}
-            onClick={resetFilters}
+            onClick={fetchProducts}
           >
-            Сбросить фильтры
+            Обновить каталог
           </button>
         </div>
       )}
