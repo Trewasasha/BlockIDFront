@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export const api = axios.create({
-  baseURL: 'http://185.135.80,107:8000/api/v1',
+  baseURL: 'http://185.135.80.107:8000/api/v1',
   headers: {
     'Content-Type': 'application/json'
   }
